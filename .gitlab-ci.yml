@@ -1,8 +1,0 @@
-stages:
-  - verify
-
-verify:
-  stage: verify
-  script:
-    - mvn verify
-
