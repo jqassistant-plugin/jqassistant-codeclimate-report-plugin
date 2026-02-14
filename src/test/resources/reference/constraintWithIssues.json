@@ -1,0 +1,36 @@
+[ {
+  "type" : "issue",
+  "description" : "A failing constraint | Type='org.jqassistant.plugin.codeclimate.report.it.TypeWithIssues', Member='java.lang.String issueField'",
+  "fingerprint" : "953ae1ee66b028d5102bfea6bd13e7d73bfd7d377b515902c38fd8be391ec26b",
+  "severity" : "major",
+  "location" : {
+    "path" : "/org/jqassistant/plugin/codeclimate/report/it/TypeWithIssues.java"
+  },
+  "check_name" : "[jQAssistant]codeclimate-report-it:ConstraintWithIssues"
+}, {
+  "type" : "issue",
+  "description" : "A failing constraint | Type='org.jqassistant.plugin.codeclimate.report.it.TypeWithIssues', Member='void issueMethod()'",
+  "fingerprint" : "861ce858c35fb6907b8031d68a9fa8722c0610ddf2b95d1f6b1e3599733747ad",
+  "severity" : "major",
+  "location" : {
+    "path" : "/org/jqassistant/plugin/codeclimate/report/it/TypeWithIssues.java",
+    "lines" : {
+      "begin" : 10,
+      "end" : 11
+    }
+  },
+  "check_name" : "[jQAssistant]codeclimate-report-it:ConstraintWithIssues"
+}, {
+  "type" : "issue",
+  "description" : "A failing constraint | Type='org.jqassistant.plugin.codeclimate.report.it.TypeWithIssues', Member='void nonIssueMethod()'",
+  "fingerprint" : "6466de1ccab810d7ad5981a1e3a385c27f3ddeb94ea9c6cef9b3ffdf942ad6f0",
+  "severity" : "major",
+  "location" : {
+    "path" : "/org/jqassistant/plugin/codeclimate/report/it/TypeWithIssues.java",
+    "lines" : {
+      "begin" : 20,
+      "end" : 21
+    }
+  },
+  "check_name" : "[jQAssistant]codeclimate-report-it:ConstraintWithIssues"
+} ]

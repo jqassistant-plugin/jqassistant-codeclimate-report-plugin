@@ -12,6 +12,8 @@
           m:Constructor
         RETURN
           t as Type, m as Member
+        ORDER BY
+          t.fqn, m.signature
         ]]></cypher>
         <report primaryColumn="Member"/>
     </constraint>
