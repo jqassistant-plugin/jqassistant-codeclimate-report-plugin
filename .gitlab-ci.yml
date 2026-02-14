@@ -1,0 +1,11 @@
+stages:
+  - verify
+
+verify:
+  stage: verify
+  script:
+    - mvn verify -PIT
+  artifacts:
+    reports:
+      codequality:
+        - target/jqassistant/report/codeclimate/jqassistant-codeclimate.json
