@@ -16,7 +16,7 @@ public class Location {
     @Builder
     @Getter
     @ToString
-    private static class Lines {
+    public static class Lines {
 
         private int begin;
 

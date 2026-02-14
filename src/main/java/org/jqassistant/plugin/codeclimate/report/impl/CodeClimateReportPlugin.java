@@ -1,34 +1,168 @@
 package org.jqassistant.plugin.codeclimate.report.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+import com.buschmais.jqassistant.core.report.api.LanguageHelper;
+import com.buschmais.jqassistant.core.report.api.ReportContext;
+import com.buschmais.jqassistant.core.report.api.ReportException;
 import com.buschmais.jqassistant.core.report.api.ReportPlugin;
 import com.buschmais.jqassistant.core.report.api.ReportPlugin.Default;
+import com.buschmais.jqassistant.core.report.api.model.Column;
 import com.buschmais.jqassistant.core.report.api.model.Result;
+import com.buschmais.jqassistant.core.report.api.model.Row;
 import com.buschmais.jqassistant.core.rule.api.model.Constraint;
 import com.buschmais.jqassistant.core.rule.api.model.ExecutableRule;
+import com.buschmais.xo.api.CompositeObject;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.jqassistant.plugin.codeclimate.report.api.impl.model.CodeClimateReport;
+import lombok.extern.slf4j.Slf4j;
+import org.jqassistant.plugin.codeclimate.report.api.impl.model.Issue;
+import org.jqassistant.plugin.codeclimate.report.api.impl.model.Location;
 import org.mapstruct.factory.Mappers;
 
 import static com.buschmais.jqassistant.core.report.api.model.Result.Status.FAILURE;
+import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
+import static java.util.Optional.empty;
+import static java.util.stream.Collectors.joining;
 
 @Default
+@Slf4j
 public class CodeClimateReportPlugin implements ReportPlugin {
+
+    public static final String REPORT_DIRECTORY = "codeclimate";
+
+    public static final String REPORT_FILE = "jqassistant-codeclimate.json";
 
     private static final SeverityMapper SEVERITY_MAPPER = Mappers.getMapper(SeverityMapper.class);
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(INDENT_OUTPUT)
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+    private ReportContext reportContext;
+
+    private List<Issue> issues;
+
+    @Override
+    public void configure(ReportContext reportContext, Map<String, Object> properties) {
+        this.reportContext = reportContext;
+    }
+
+    @Override
+    public void begin() {
+        issues = new LinkedList<>();
+    }
 
     @Override
     public void setResult(Result<? extends ExecutableRule> result) {
         if (FAILURE.equals(result.getStatus())) {
             ExecutableRule executableRule = result.getRule();
+            Constraint constraint = (Constraint) executableRule;
             if (executableRule instanceof Constraint) {
-                Constraint constraint = (Constraint) executableRule;
-                CodeClimateReport.CodeClimateReportBuilder reportBuilder = CodeClimateReport.builder()
-                        .checkName("[jQAssistant] " + constraint.getId())
-                        .description(constraint.getDescription());
+                for (Row row : result.getRows()) {
+                    Issue issue = getIssue(result, constraint, row);
+                    issues.add(issue);
+                }
             }
         }
     }
+
+    @Override
+    public void end() throws ReportException {
+        File reportDirectory = reportContext.getReportDirectory(REPORT_DIRECTORY);
+        try {
+            File file = new File(reportDirectory, REPORT_FILE).getCanonicalFile();
+            log.info("Writing CodeClimate report to {}.", file);
+            OBJECT_MAPPER.writeValue(file, issues);
+        } catch (IOException e) {
+            throw new ReportException("Failed to write CodeClimate report file.", e);
+        }
+    }
+
+    private Issue getIssue(Result<? extends ExecutableRule> result, Constraint constraint, Row row) {
+        Issue.IssueBuilder issueBuilder = Issue.builder()
+                .checkName("[jQAssistant] " + constraint.getId())
+                .severity(SEVERITY_MAPPER.toReport(constraint.getSeverity()))
+                .fingerprint(row.getKey());
+        StringBuilder description = new StringBuilder(constraint.getDescription());
+        String columnsValues = row.getColumns()
+                .entrySet()
+                .stream()
+                .map(entry -> entry.getKey() + "='" + entry.getValue()
+                        .getLabel() + "'")
+                .collect(joining(", "));
+        if (!columnsValues.isEmpty()) {
+            description.append(" | ")
+                    .append(columnsValues);
+        }
+        issueBuilder.description(description.toString());
+        getLocation(result, row).ifPresent(location -> issueBuilder.location(location));
+        return issueBuilder.build();
+    }
+
+    private Optional<Location> getLocation(Result<? extends ExecutableRule> result, Row row) {
+        String primaryColumnName = getPrimaryColumn(result.getRule(), result.getColumnNames());
+        Column<?> primaryColumn = row.getColumns()
+                .get(primaryColumnName);
+        if (primaryColumn != null) {
+            Object value = primaryColumn.getValue();
+            if (value instanceof CompositeObject) {
+                CompositeObject descriptor = (CompositeObject) value;
+                return LanguageHelper.getLanguageElement(descriptor)
+                        .map(languageElement -> languageElement.getSourceProvider())
+                        .flatMap(sourceProvider -> sourceProvider.getSourceLocation(descriptor))
+                        .map(fileLocation -> {
+                            Location.LocationBuilder locationBuilder = Location.builder()
+                                    .path(fileLocation.getFileName());
+                            fileLocation.getStartLine()
+                                    .ifPresent(startLine -> {
+                                        Location.Lines.LinesBuilder linesBuilder = Location.Lines.builder()
+                                                .begin(startLine);
+                                        fileLocation.getEndLine()
+                                                .ifPresent(endLine -> linesBuilder.end(endLine));
+                                        locationBuilder.lines(linesBuilder.build());
+                                    });
+                            return locationBuilder.build();
+                        });
+            }
+        }
+        return empty();
+    }
+
+    /**
+     * TODO: Move to AnalyzerContext#toRow
+     * <p>
+     * Determine the primary column for a rule, i.e. the colum used by tools like
+     * SonarQube to attach issues.
+     *
+     * @param rule
+     *         The {@link ExecutableRule}.
+     * @param columnNames
+     *         The column names returned by the executed rule.
+     * @return The name of the primary column.
+     */
+    private String getPrimaryColumn(ExecutableRule<?> rule, List<String> columnNames) {
+        if (columnNames == null || columnNames.isEmpty()) {
+            return null;
+        }
+        String primaryColumn = rule.getReport()
+                .getPrimaryColumn();
+        String firstColumn = columnNames.get(0);
+        if (primaryColumn == null) {
+            // primary column not explicitly specifed by the rule, so take the first column by default.
+            return firstColumn;
+        }
+        if (!columnNames.contains(primaryColumn)) {
+            log.warn("Rule '{}' defines primary column '{}' which is not provided by the result (available columns: {}). Falling back to '{}'.", rule,
+                    primaryColumn, columnNames, firstColumn);
+            primaryColumn = firstColumn;
+        }
+        return primaryColumn;
+    }
+
 }

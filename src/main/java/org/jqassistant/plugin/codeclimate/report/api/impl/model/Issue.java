@@ -7,7 +7,7 @@ import lombok.ToString;
 @Builder
 @Getter
 @ToString
-public class CodeClimateReport {
+public class Issue {
 
     private final String type = "issue";
 
