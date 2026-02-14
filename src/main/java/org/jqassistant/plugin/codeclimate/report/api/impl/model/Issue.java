@@ -1,5 +1,6 @@
 package org.jqassistant.plugin.codeclimate.report.api.impl.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -13,6 +14,7 @@ public class Issue {
 
     private String description;
 
+    @JsonProperty("check_name")
     private String checkName;
 
     private String fingerprint;
