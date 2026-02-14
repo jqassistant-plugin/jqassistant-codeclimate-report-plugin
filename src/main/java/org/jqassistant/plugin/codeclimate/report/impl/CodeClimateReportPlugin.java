@@ -86,7 +86,7 @@ public class CodeClimateReportPlugin implements ReportPlugin {
 
     private Issue getIssue(Result<? extends ExecutableRule> result, Constraint constraint, Row row) {
         Issue.IssueBuilder issueBuilder = Issue.builder()
-                .checkName("[jQAssistant] " + constraint.getId())
+                .checkName("[jQAssistant]" + constraint.getId())
                 .severity(SEVERITY_MAPPER.toReport(constraint.getSeverity()))
                 .fingerprint(row.getKey());
         StringBuilder description = new StringBuilder(constraint.getDescription());
