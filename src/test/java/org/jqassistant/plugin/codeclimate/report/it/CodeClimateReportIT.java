@@ -26,7 +26,7 @@ public class CodeClimateReportIT extends AbstractJavaPluginIT {
 
         assertThat(result.getStatus()).isEqualTo(FAILURE);
 
-        File codeClimateReport = new File("target/jqassistant/report/codeclimate/jqassistant-codeclimate.json");
+        File codeClimateReport = new File("target/jqassistant/report/codeclimate/jqassistant-codeclimate-report.json");
         assertThat(codeClimateReport).exists();
         String expectedJson = IOUtils.toString(CodeClimateReportIT.class.getResourceAsStream("/reference/constraintWithIssues.json"), UTF_8);
         assertJson(codeClimateReport).isEqualTo(expectedJson);

@@ -37,7 +37,7 @@ public class CodeClimateReportPlugin implements ReportPlugin {
 
     public static final String REPORT_DIRECTORY = "codeclimate";
 
-    public static final String REPORT_FILE = "jqassistant-codeclimate.json";
+    public static final String REPORT_FILE = "jqassistant-codeclimate-report.json";
 
     private static final SeverityMapper SEVERITY_MAPPER = Mappers.getMapper(SeverityMapper.class);
 

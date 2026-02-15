@@ -41,6 +41,10 @@
         <url>https://github.com/jqassistant-plugin/jqassistant-graphml-plugin</url>
     </scm>
 
+    <properties>
+        <sonar.projectKey>jqassistant-plugin_jqassistant-codeclimate-report-plugin</sonar.projectKey>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>com.buschmais.jqassistant.core</groupId>

@@ -8,4 +8,4 @@ verify:
   artifacts:
     reports:
       codequality:
-        - target/jqassistant/report/codeclimate/jqassistant-codeclimate.json
+        - target/jqassistant/report/codeclimate/jqassistant-codeclimate-report.json
