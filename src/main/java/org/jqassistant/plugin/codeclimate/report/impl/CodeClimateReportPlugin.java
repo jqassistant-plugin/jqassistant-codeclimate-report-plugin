@@ -13,6 +13,7 @@ import com.buschmais.jqassistant.core.report.api.ReportException;
 import com.buschmais.jqassistant.core.report.api.ReportPlugin;
 import com.buschmais.jqassistant.core.report.api.ReportPlugin.Default;
 import com.buschmais.jqassistant.core.report.api.model.Column;
+import com.buschmais.jqassistant.core.report.api.model.LanguageElement;
 import com.buschmais.jqassistant.core.report.api.model.Result;
 import com.buschmais.jqassistant.core.report.api.model.Row;
 import com.buschmais.jqassistant.core.rule.api.model.Constraint;
@@ -63,11 +64,8 @@ public class CodeClimateReportPlugin implements ReportPlugin {
         if (FAILURE.equals(result.getStatus())) {
             ExecutableRule executableRule = result.getRule();
             Constraint constraint = (Constraint) executableRule;
-            if (executableRule instanceof Constraint) {
-                for (Row row : result.getRows()) {
-                    Issue issue = getIssue(result, constraint, row);
-                    issues.add(issue);
-                }
+            for (Row row : result.getRows()) {
+                issues.add(getIssue(result, constraint, row));
             }
         }
     }
@@ -101,7 +99,7 @@ public class CodeClimateReportPlugin implements ReportPlugin {
                     .append(columnsValues);
         }
         issueBuilder.description(description.toString());
-        getLocation(result, row).ifPresent(location -> issueBuilder.location(location));
+        getLocation(result, row).ifPresent(issueBuilder::location);
         return issueBuilder.build();
     }
 
@@ -114,7 +112,7 @@ public class CodeClimateReportPlugin implements ReportPlugin {
             if (value instanceof CompositeObject) {
                 CompositeObject descriptor = (CompositeObject) value;
                 return LanguageHelper.getLanguageElement(descriptor)
-                        .map(languageElement -> languageElement.getSourceProvider())
+                        .map(LanguageElement::getSourceProvider)
                         .flatMap(sourceProvider -> sourceProvider.getSourceLocation(descriptor))
                         .map(fileLocation -> {
                             Location.LocationBuilder locationBuilder = Location.builder()
@@ -124,7 +122,7 @@ public class CodeClimateReportPlugin implements ReportPlugin {
                                         Location.Lines.LinesBuilder linesBuilder = Location.Lines.builder()
                                                 .begin(startLine);
                                         fileLocation.getEndLine()
-                                                .ifPresent(endLine -> linesBuilder.end(endLine));
+                                                .ifPresent(linesBuilder::end);
                                         locationBuilder.lines(linesBuilder.build());
                                     });
                             return locationBuilder.build();
