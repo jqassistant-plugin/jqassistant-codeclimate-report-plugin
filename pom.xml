@@ -11,9 +11,9 @@
     <artifactId>jqassistant-codeclimate-report-plugin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>jQAssistant GraphML Plugin</name>
-    <description>The jQAssistant report plugin enabling to generate GraphML files from results of concepts.</description>
-    <url>https://github.com/jqassistant-plugin/jqassistant-graphml-plugin</url>
+    <name>jQAssistant CodeClimate Report Plugin</name>
+    <description>Reports jQAssistant failures as CodeClimate JSON reports for publishing them to other tools, e.g. GitLab.</description>
+    <url>https://github.com/jqassistant-plugin/jqassistant-codeclimate-report-plugin</url>
 
     <organization>
         <name>jQAssistant Development Team</name>
@@ -37,12 +37,13 @@
 
     <scm>
         <connection>scm:git:https://github.com/jqassistant-plugin/jqassistant-graphml-plugin.git</connection>
-        <developerConnection>scm:git:https://github.com/jqassistant-plugin/jqassistant-graphml-plugin.git</developerConnection>
-        <url>https://github.com/jqassistant-plugin/jqassistant-graphml-plugin</url>
+        <developerConnection>scm:git:https://github.com/jqassistant-plugin/jqassistant-codeclimate-report-plugin.git</developerConnection>
+        <url>https://github.com/jqassistant-plugin/jqassistant-codeclimate-report-plugin</url>
     </scm>
 
     <properties>
         <sonar.projectKey>jqassistant-plugin_jqassistant-codeclimate-report-plugin</sonar.projectKey>
+        <model-assert.version>1.0.0</model-assert.version>
     </properties>
 
     <dependencies>
@@ -90,7 +91,7 @@
         <dependency>
             <groupId>uk.org.webcompere</groupId>
             <artifactId>model-assert</artifactId>
-            <version>1.0.0</version>
+            <version>${model-assert.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
