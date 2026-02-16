@@ -19,7 +19,7 @@ jqassistant:
   plugins:
     - group-id: org.jqassistant.plugin
       artifact-id: jqassistant-codeclimate-report-plugin
-      version: 1.0.0-M1
+      version: 1.0.0
 ----
 
 During execution of the `analyze` task or goal a file `jqassistant-code-climate-report.json` is created in the report directory. This can be referenced by a GitLab CI configuration:
