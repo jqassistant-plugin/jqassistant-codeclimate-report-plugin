@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
 import static com.buschmais.jqassistant.core.report.api.model.Result.Status.FAILURE;
+import static com.buschmais.jqassistant.core.report.api.model.Result.Status.WARNING;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.org.webcompere.modelassert.json.JsonAssertions.assertJson;
@@ -20,15 +21,24 @@ import static uk.org.webcompere.modelassert.json.JsonAssertions.assertJson;
 public class CodeClimateReportIT extends AbstractJavaPluginIT {
 
     @Test
-    void constraintWithIssues() throws RuleException, IOException {
-        scanClassPathDirectory(getClassesDirectory(TypeWithIssues.class));
-        Result<Constraint> result = validateConstraint("codeclimate-report-it:ConstraintWithIssues", Map.of("fqn", TypeWithIssues.class.getName()));
+    void constraintWithFailures() throws RuleException, IOException {
+        verify("ConstraintWithFailures", FAILURE);
+    }
 
-        assertThat(result.getStatus()).isEqualTo(FAILURE);
+    @Test
+    void constraintWithWarnings() throws RuleException, IOException {
+        verify("ConstraintWithWarnings", WARNING);
+    }
+
+    private void verify(String constraintId, Result.Status expectedStatus) throws RuleException, IOException {
+        scanClassPathDirectory(getClassesDirectory(TypeWithIssues.class));
+        Result<Constraint> result = validateConstraint("codeclimate-report-it:" + constraintId, Map.of("fqn", TypeWithIssues.class.getName()));
+
+        assertThat(result.getStatus()).isEqualTo(expectedStatus);
 
         File codeClimateReport = new File("target/jqassistant/report/codeclimate/jqassistant-codeclimate-report.json");
         assertThat(codeClimateReport).exists();
-        String expectedJson = IOUtils.toString(CodeClimateReportIT.class.getResourceAsStream("/reference/constraintWithIssues.json"), UTF_8);
+        String expectedJson = IOUtils.toString(CodeClimateReportIT.class.getResourceAsStream("/reference/" + constraintId + ".json"), UTF_8);
         assertJson(codeClimateReport).isEqualTo(expectedJson);
     }
 }

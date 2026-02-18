@@ -7,18 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import com.buschmais.jqassistant.core.report.api.LanguageHelper;
 import com.buschmais.jqassistant.core.report.api.ReportContext;
 import com.buschmais.jqassistant.core.report.api.ReportException;
 import com.buschmais.jqassistant.core.report.api.ReportPlugin;
 import com.buschmais.jqassistant.core.report.api.ReportPlugin.Default;
 import com.buschmais.jqassistant.core.report.api.model.Column;
-import com.buschmais.jqassistant.core.report.api.model.LanguageElement;
 import com.buschmais.jqassistant.core.report.api.model.Result;
 import com.buschmais.jqassistant.core.report.api.model.Row;
+import com.buschmais.jqassistant.core.report.api.model.source.FileLocation;
+import com.buschmais.jqassistant.core.report.api.model.source.SourceLocation;
 import com.buschmais.jqassistant.core.rule.api.model.Constraint;
 import com.buschmais.jqassistant.core.rule.api.model.ExecutableRule;
-import com.buschmais.xo.api.CompositeObject;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +27,7 @@ import org.jqassistant.plugin.codeclimate.report.api.impl.model.Location;
 import org.mapstruct.factory.Mappers;
 
 import static com.buschmais.jqassistant.core.report.api.model.Result.Status.FAILURE;
+import static com.buschmais.jqassistant.core.report.api.model.Result.Status.WARNING;
 import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
 import static java.util.Optional.empty;
 import static java.util.stream.Collectors.joining;
@@ -61,11 +61,14 @@ public class CodeClimateReportPlugin implements ReportPlugin {
 
     @Override
     public void setResult(Result<? extends ExecutableRule> result) {
-        if (FAILURE.equals(result.getStatus())) {
-            ExecutableRule executableRule = result.getRule();
+        Result.Status status = result.getStatus();
+        if (FAILURE.equals(status) || WARNING.equals(status)) {
+            ExecutableRule<?> executableRule = result.getRule();
             Constraint constraint = (Constraint) executableRule;
             for (Row row : result.getRows()) {
-                issues.add(getIssue(result, constraint, row));
+                if (!row.isHidden()) {
+                    issues.add(getIssue(result, constraint, row));
+                }
             }
         }
     }
@@ -104,29 +107,27 @@ public class CodeClimateReportPlugin implements ReportPlugin {
     }
 
     private Optional<Location> getLocation(Result<? extends ExecutableRule> result, Row row) {
-        String primaryColumnName = getPrimaryColumn(result.getRule(), result.getColumnNames());
-        Column<?> primaryColumn = row.getColumns()
-                .get(primaryColumnName);
-        if (primaryColumn != null) {
-            Object value = primaryColumn.getValue();
-            if (value instanceof CompositeObject) {
-                CompositeObject descriptor = (CompositeObject) value;
-                return LanguageHelper.getLanguageElement(descriptor)
-                        .map(LanguageElement::getSourceProvider)
-                        .flatMap(sourceProvider -> sourceProvider.getSourceLocation(descriptor))
-                        .map(fileLocation -> {
-                            Location.LocationBuilder locationBuilder = Location.builder()
-                                    .path(fileLocation.getFileName());
-                            fileLocation.getStartLine()
-                                    .ifPresent(startLine -> {
-                                        Location.Lines.LinesBuilder linesBuilder = Location.Lines.builder()
-                                                .begin(startLine);
-                                        fileLocation.getEndLine()
-                                                .ifPresent(linesBuilder::end);
-                                        locationBuilder.lines(linesBuilder.build());
-                                    });
-                            return locationBuilder.build();
-                        });
+        Optional<String> primaryColumnName = result.getPrimaryColumn();
+        if (primaryColumnName.isPresent()) {
+            Column<?> column = row.getColumns()
+                    .get(primaryColumnName.get());
+            Optional<SourceLocation<?>> optionalSourceLocation = column.getSourceLocation();
+            if (optionalSourceLocation.isPresent()) {
+                SourceLocation<?> sourceLocation = optionalSourceLocation.get();
+                Location.LocationBuilder locationBuilder = Location.builder()
+                        .path(sourceLocation.getFileName());
+                if (sourceLocation instanceof FileLocation) {
+                    FileLocation fileLocation = (FileLocation) sourceLocation;
+                    fileLocation.getStartLine()
+                            .ifPresent(startLine -> {
+                                Location.Lines.LinesBuilder linesBuilder = Location.Lines.builder()
+                                        .begin(startLine);
+                                fileLocation.getEndLine()
+                                        .ifPresent(linesBuilder::end);
+                                locationBuilder.lines(linesBuilder.build());
+                            });
+                }
+                return Optional.of(locationBuilder.build());
             }
         }
         return empty();

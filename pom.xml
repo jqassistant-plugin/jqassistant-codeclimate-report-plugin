@@ -44,6 +44,7 @@
     <properties>
         <sonar.projectKey>jqassistant-plugin_jqassistant-codeclimate-report-plugin</sonar.projectKey>
         <model-assert.version>1.1.0</model-assert.version>
+        <jqassistant.version>2.10.0-M2</jqassistant.version>
     </properties>
 
     <dependencies>

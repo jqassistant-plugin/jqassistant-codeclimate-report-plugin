@@ -10,7 +10,7 @@ public class TypeWithIssues {
         System.out.println("issueMethod");
     }
 
-    @jQASuppress("codeclimate-report-it:ConstraintWithIssues")
+    @jQASuppress(value = { "codeclimate-report-it:ConstraintWithFailures", "codeclimate-report-it:ConstraintWithWarnings" })
     public void suppressedIssueMethod() {
         System.out.println("suppressedIssueMethod");
 
