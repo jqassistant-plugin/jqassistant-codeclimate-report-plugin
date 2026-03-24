@@ -132,36 +132,4 @@ public class CodeClimateReportPlugin implements ReportPlugin {
         }
         return empty();
     }
-
-    /**
-     * TODO: Move to AnalyzerContext#toRow
-     * <p>
-     * Determine the primary column for a rule, i.e. the colum used by tools like
-     * SonarQube to attach issues.
-     *
-     * @param rule
-     *         The {@link ExecutableRule}.
-     * @param columnNames
-     *         The column names returned by the executed rule.
-     * @return The name of the primary column.
-     */
-    private String getPrimaryColumn(ExecutableRule<?> rule, List<String> columnNames) {
-        if (columnNames == null || columnNames.isEmpty()) {
-            return null;
-        }
-        String primaryColumn = rule.getReport()
-                .getPrimaryColumn();
-        String firstColumn = columnNames.get(0);
-        if (primaryColumn == null) {
-            // primary column not explicitly specifed by the rule, so take the first column by default.
-            return firstColumn;
-        }
-        if (!columnNames.contains(primaryColumn)) {
-            log.warn("Rule '{}' defines primary column '{}' which is not provided by the result (available columns: {}). Falling back to '{}'.", rule,
-                    primaryColumn, columnNames, firstColumn);
-            primaryColumn = firstColumn;
-        }
-        return primaryColumn;
-    }
-
 }
