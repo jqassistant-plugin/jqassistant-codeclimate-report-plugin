@@ -28,7 +28,7 @@ import org.mapstruct.factory.Mappers;
 
 import static com.buschmais.jqassistant.core.report.api.model.Result.Status.FAILURE;
 import static com.buschmais.jqassistant.core.report.api.model.Result.Status.WARNING;
-import static com.fasterxml.jackson.databind.SerializationFeature.INDENT_OUTPUT;
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 import static java.util.Optional.empty;
 import static java.util.stream.Collectors.joining;
 
@@ -42,8 +42,7 @@ public class CodeClimateReportPlugin implements ReportPlugin {
 
     private static final SeverityMapper SEVERITY_MAPPER = Mappers.getMapper(SeverityMapper.class);
 
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().enable(INDENT_OUTPUT)
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper().setDefaultPropertyInclusion(NON_NULL);
 
     private ReportContext reportContext;
 
@@ -79,7 +78,7 @@ public class CodeClimateReportPlugin implements ReportPlugin {
         try {
             File file = new File(reportDirectory, REPORT_FILE).getCanonicalFile();
             log.info("Writing CodeClimate report to {}.", file);
-            OBJECT_MAPPER.writeValue(file, issues);
+            OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValue(file, issues);
         } catch (IOException e) {
             throw new ReportException("Failed to write CodeClimate report file.", e);
         }
@@ -112,11 +111,10 @@ public class CodeClimateReportPlugin implements ReportPlugin {
             Column<?> column = row.getColumns()
                     .get(primaryColumnName.get());
             Optional<SourceLocation<?>> optionalSourceLocation = column.getSourceLocation();
-            if (optionalSourceLocation.isPresent()) {
+            if (optionalSourceLocation.isPresent() && optionalSourceLocation.get() instanceof FileLocation) {
                 SourceLocation<?> sourceLocation = optionalSourceLocation.get();
                 Location.LocationBuilder locationBuilder = Location.builder()
                         .path(sourceLocation.getFileName());
-                if (sourceLocation instanceof FileLocation) {
                     FileLocation fileLocation = (FileLocation) sourceLocation;
                     fileLocation.getStartLine()
                             .ifPresent(startLine -> {
@@ -126,7 +124,6 @@ public class CodeClimateReportPlugin implements ReportPlugin {
                                         .ifPresent(linesBuilder::end);
                                 locationBuilder.lines(linesBuilder.build());
                             });
-                }
                 return Optional.of(locationBuilder.build());
             }
         }
