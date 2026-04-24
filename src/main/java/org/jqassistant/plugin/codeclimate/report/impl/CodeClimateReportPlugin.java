@@ -104,7 +104,7 @@ public class CodeClimateReportPlugin implements ReportPlugin {
         getLocation(result, row).ifPresent(issueBuilder::location);
         return issueBuilder.build();
     }
-
+//Despite linking of source locations is implemented by this plugin the generated links are not valid yet. This requires a https://github.com/jQAssistant/jqassistant/issues/1077[change in jQAssistant] which is scheduled for one of the next releases.
     private Optional<Location> getLocation(Result<? extends ExecutableRule> result, Row row) {
         Optional<String> primaryColumnName = result.getPrimaryColumn();
         if (primaryColumnName.isPresent()) {
