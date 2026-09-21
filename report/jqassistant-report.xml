@@ -3,21 +3,22 @@
   <context>
     <build>
       <name>jQAssistant CodeClimate Report Plugin</name>
-      <timestamp>2026-04-24T10:32:25.869Z</timestamp>
+      <timestamp>2026-09-21T14:12:19.742Z</timestamp>
       <properties></properties>
     </build>
   </context>
-  <group id="jqassistant-plugin:Default" date="2026-04-24T10:33:04">
-    <group id="jqassistant-plugin-maven:Default" date="2026-04-24T10:33:04">
+  <group id="jqassistant-plugin:Default" date="2026-09-21T14:12:53">
+    <group id="jqassistant-plugin-maven:Default" date="2026-09-21T14:12:53">
       <constraint id="jqassistant-plugin-maven:GroupId">
         <description>The groupId for jQAssistant plugin Maven projects must follow the pattern 'org.jqassistant.plugin.&lt;project&gt;'.</description>
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="2">major</severity>
-        <duration>105</duration>
+        <duration>99</duration>
       </constraint>
       <concept id="jqassistant-plugin-maven:ParentProject" abstract="false">
         <description>Labels all Maven projects which declare "org.jqassistant.plugin:parent" as parent module with "Parent".</description>
@@ -29,31 +30,34 @@
             <row key="e1df278d30a868c0b444cdcc388edd0b1c65b2d9870ff6075c75f0017893923a">
               <column name="parent">
                 <element language="Generic">Named</element>
-                <source fileName="/home/runner/work/jqassistant-codeclimate-report-plugin/jqassistant-codeclimate-report-plugin"></source>
+                <source path="" fileName="/"></source>
                 <value>jQAssistant CodeClimate Report Plugin</value>
               </column>
+              <status level="2">success</status>
             </row>
           </rows>
         </result>
         <verificationResult>
           <success>true</success>
           <rowCount>1</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>130</duration>
+        <duration>139</duration>
       </concept>
       <constraint id="jqassistant-plugin-maven:MavenModulesMustUseParentGroupId">
         <description>All Maven projects must define the same groupId as the parent of the plugin project.</description>
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="2">major</severity>
-        <duration>89</duration>
+        <duration>95</duration>
         <required-concept id="jqassistant-plugin-maven:ParentProject">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </constraint>
       <constraint id="jqassistant-plugin-maven:ParentProjectMustDefineDeveloper">
@@ -61,12 +65,13 @@
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="2">major</severity>
-        <duration>98</duration>
+        <duration>99</duration>
         <required-concept id="jqassistant-plugin-maven:ParentProject">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </constraint>
       <constraint id="jqassistant-plugin-maven:ParentProjectMustDefineScmSection">
@@ -74,12 +79,13 @@
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="2">major</severity>
-        <duration>93</duration>
+        <duration>108</duration>
         <required-concept id="jqassistant-plugin-maven:ParentProject">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </constraint>
       <constraint id="jqassistant-plugin-maven:ParentProjectMustDefineUrl">
@@ -87,27 +93,29 @@
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="2">major</severity>
-        <duration>198</duration>
+        <duration>209</duration>
         <required-concept id="jqassistant-plugin-maven:ParentProject">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </constraint>
-      <duration>937</duration>
+      <duration>967</duration>
     </group>
-    <group id="jqassistant-plugin-test:Default" date="2026-04-24T10:33:05">
+    <group id="jqassistant-plugin-test:Default" date="2026-09-21T14:12:54">
       <concept id="junit5:ParameterizedTestMethod" abstract="false">
         <description>Finds all test methods (i.e. annotated with "@org.junit.jupiter.api.ParameterizedTest") and
 labels them with "Test", "Parameterized", and "Junit5".</description>
         <verificationResult>
           <success>false</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>60</duration>
+        <duration>77</duration>
       </concept>
       <concept id="junit5:TestMethod" abstract="false">
         <description>Finds all test methods (i.e. annotated with "@org.junit.jupiter.api.Test") and
@@ -116,34 +124,47 @@ labels them with "Test" and "Junit5".</description>
           <columns count="1" primary="Test">
             <column>Test</column>
           </columns>
-          <rows count="2">
-            <row key="4673aa6186f7f30fb6447a2e16d906c27034d8c570e5b2bcfb126ed172ac38d1">
-              <column name="Test">
-                <element language="Java">Method</element>
-                <source fileName="/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java" startLine="25" endLine="26">
-                  <parent fileName="/home/runner/.m2/repository/org/jqassistant/plugin/jqassistant-codeclimate-report-plugin/1.1.0-SNAPSHOT/jqassistant-codeclimate-report-plugin-1.1.0-SNAPSHOT-tests.test-jar" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="test-jar" version="1.1.0-SNAPSHOT" classifier="tests"></parent>
-                </source>
-                <value>void constraintWithFailures()</value>
-              </column>
-            </row>
+          <rows count="3">
             <row key="0829a345457340e92166d6e6ef2fbef0457706ddd988a80520ff7be72849c232">
               <column name="Test">
                 <element language="Java">Method</element>
-                <source fileName="/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java" startLine="30" endLine="31">
-                  <parent fileName="/home/runner/.m2/repository/org/jqassistant/plugin/jqassistant-codeclimate-report-plugin/1.1.0-SNAPSHOT/jqassistant-codeclimate-report-plugin-1.1.0-SNAPSHOT-tests.test-jar" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="test-jar" version="1.1.0-SNAPSHOT" classifier="tests"></parent>
+                <source path="src/test/java/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java" fileName="/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java" startLine="31" endLine="32">
+                  <parent path="target/test-classes" fileName="/target/test-classes" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="test-jar" version="1.1.0-SNAPSHOT" classifier="tests"></parent>
                 </source>
                 <value>void constraintWithWarnings()</value>
               </column>
+              <status level="2">success</status>
+            </row>
+            <row key="8e3c0766b0f358228a7fe5656bc2f79279ebdb18eba70a5e99fff7c3564193b3">
+              <column name="Test">
+                <element language="Java">Method</element>
+                <source path="src/test/java/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java" fileName="/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java" startLine="36" endLine="37">
+                  <parent path="target/test-classes" fileName="/target/test-classes" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="test-jar" version="1.1.0-SNAPSHOT" classifier="tests"></parent>
+                </source>
+                <value>void constraintWithotuLocation()</value>
+              </column>
+              <status level="2">success</status>
+            </row>
+            <row key="4673aa6186f7f30fb6447a2e16d906c27034d8c570e5b2bcfb126ed172ac38d1">
+              <column name="Test">
+                <element language="Java">Method</element>
+                <source path="src/test/java/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java" fileName="/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java" startLine="26" endLine="27">
+                  <parent path="target/test-classes" fileName="/target/test-classes" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="test-jar" version="1.1.0-SNAPSHOT" classifier="tests"></parent>
+                </source>
+                <value>void constraintWithFailures()</value>
+              </column>
+              <status level="2">success</status>
             </row>
           </rows>
         </result>
         <verificationResult>
           <success>true</success>
-          <rowCount>2</rowCount>
+          <rowCount>3</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>73</duration>
+        <duration>76</duration>
       </concept>
       <concept id="junit5:TestTemplateMethod" abstract="false">
         <description>Labels all methods annotated by "@org.junit.jupiter.api.TestTemplate"
@@ -151,10 +172,11 @@ with "Junit5", "Test" and "Template".</description>
         <verificationResult>
           <success>false</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>93</duration>
+        <duration>87</duration>
       </concept>
       <concept id="junit5:RepeatedTestMethod" abstract="false">
         <description>Finds all test methods (i.e. annotated with "@org.junit.jupiter.api.RepeatedTest") and
@@ -162,10 +184,11 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>false</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>50</duration>
+        <duration>52</duration>
       </concept>
       <concept id="junit5:TestClass" abstract="false">
         <description>Labels all classes containing test methods with "Test" and "Junit5".</description>
@@ -175,38 +198,40 @@ labels them with "Test", "Repeated", and "Junit5".</description>
             <column>TestMethods</column>
           </columns>
           <rows count="1">
-            <row key="09cd1454354beb3dba1708ec1c1bec679568703fb75255ba7757d3aa7ac679e6">
+            <row key="a8016fc98dd2e8c8fa574efbcc8f9650e548fb1465cea8eeba345af6b6f2e940">
               <column name="TestClass">
                 <element language="Java">Type</element>
-                <source fileName="/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java">
-                  <parent fileName="/home/runner/.m2/repository/org/jqassistant/plugin/jqassistant-codeclimate-report-plugin/1.1.0-SNAPSHOT/jqassistant-codeclimate-report-plugin-1.1.0-SNAPSHOT-tests.test-jar" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="test-jar" version="1.1.0-SNAPSHOT" classifier="tests"></parent>
+                <source path="src/test/java/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java" fileName="/org/jqassistant/plugin/codeclimate/report/it/CodeClimateReportIT.java">
+                  <parent path="target/test-classes" fileName="/target/test-classes" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="test-jar" version="1.1.0-SNAPSHOT" classifier="tests"></parent>
                 </source>
                 <value>org.jqassistant.plugin.codeclimate.report.it.CodeClimateReportIT</value>
               </column>
               <column name="TestMethods">
-                <value>void constraintWithFailures(), void constraintWithWarnings()</value>
+                <value>void constraintWithFailures(), void constraintWithWarnings(), void constraintWithotuLocation()</value>
               </column>
+              <status level="2">success</status>
             </row>
           </rows>
         </result>
         <verificationResult>
           <success>true</success>
           <rowCount>1</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>69</duration>
+        <duration>68</duration>
         <required-concept id="junit5:ParameterizedTestMethod">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
         <required-concept id="junit5:TestMethod">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
         <required-concept id="junit5:TestTemplateMethod">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
         <required-concept id="junit5:RepeatedTestMethod">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </concept>
       <concept id="jqassistant-plugin-test:IT" abstract="false">
@@ -214,12 +239,13 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>false</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>129</duration>
+        <duration>106</duration>
         <required-concept id="junit5:TestClass">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </concept>
       <constraint id="jqassistant-plugin-test:IntegrationTestClassSuffix">
@@ -227,24 +253,26 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="2">major</severity>
-        <duration>30</duration>
+        <duration>26</duration>
         <required-concept id="jqassistant-plugin-test:IT">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </constraint>
-      <duration>555</duration>
+      <duration>544</duration>
     </group>
-    <group id="jqassistant-plugin-plugin:Default" date="2026-04-24T10:33:06">
+    <group id="jqassistant-plugin-plugin:Default" date="2026-09-21T14:12:54">
       <concept id="neo4j:Procedure" abstract="false">
         <description>Labels all types annotated with "@org.neo4j.procedure.Procedure" with `Neo4j` and `Procedure`.</description>
         <verificationResult>
           <success>false</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
         <duration>56</duration>
       </concept>
@@ -256,41 +284,44 @@ labels them with "Test", "Repeated", and "Junit5".</description>
             <column>PluginDescriptor</column>
           </columns>
           <rows count="2">
-            <row key="21141ddf81284ecd3153f7809e28db3f942da9555020951bbb564235b2d81235">
+            <row key="61da794bd81608d84bd5f17689ab69836b35ed6e7078dcb84cc269528f994872">
               <column name="Artifact">
-                <element language="Generic">ArtifactFile</element>
-                <source fileName="/home/runner/.m2/repository/org/jqassistant/plugin/jqassistant-codeclimate-report-plugin/1.1.0-SNAPSHOT/jqassistant-codeclimate-report-plugin-1.1.0-SNAPSHOT.jar"></source>
+                <element language="Generic">Artifact</element>
+                <source path="target/classes" fileName="/target/classes"></source>
                 <value>org.jqassistant.plugin:jqassistant-codeclimate-report-plugin:jar:1.1.0-SNAPSHOT</value>
               </column>
               <column name="PluginDescriptor">
                 <element language="Generic">File</element>
-                <source fileName="/META-INF/jqassistant-plugin.xml">
-                  <parent fileName="/home/runner/.m2/repository/org/jqassistant/plugin/jqassistant-codeclimate-report-plugin/1.1.0-SNAPSHOT/jqassistant-codeclimate-report-plugin-1.1.0-SNAPSHOT.jar" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="jar" version="1.1.0-SNAPSHOT"></parent>
+                <source path="target/classes/META-INF/jqassistant-plugin.xml" fileName="/META-INF/jqassistant-plugin.xml">
+                  <parent path="target/classes" fileName="/target/classes" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="jar" version="1.1.0-SNAPSHOT"></parent>
                 </source>
-                <value>/META-INF/jqassistant-plugin.xml</value>
+                <value>target/classes/META-INF/jqassistant-plugin.xml</value>
               </column>
+              <status level="2">success</status>
             </row>
-            <row key="b9ad1a5cb95d2ad20688bc78e9448bb412aacc76b03b5b463f15e195fd58be82">
+            <row key="0348f57e281c41743752413369dd2c78c57bbe44cc8d7628d5cbe8cf329355f3">
               <column name="Artifact">
-                <element language="Generic">ArtifactFile</element>
-                <source fileName="/home/runner/.m2/repository/org/jqassistant/plugin/jqassistant-codeclimate-report-plugin/1.1.0-SNAPSHOT/jqassistant-codeclimate-report-plugin-1.1.0-SNAPSHOT-tests.test-jar"></source>
+                <element language="Generic">Artifact</element>
+                <source path="target/test-classes" fileName="/target/test-classes"></source>
                 <value>org.jqassistant.plugin:jqassistant-codeclimate-report-plugin:test-jar:tests:1.1.0-SNAPSHOT</value>
               </column>
               <column name="PluginDescriptor">
                 <element language="Generic">File</element>
-                <source fileName="/META-INF/jqassistant-plugin.xml">
-                  <parent fileName="/home/runner/.m2/repository/org/jqassistant/plugin/jqassistant-codeclimate-report-plugin/1.1.0-SNAPSHOT/jqassistant-codeclimate-report-plugin-1.1.0-SNAPSHOT-tests.test-jar" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="test-jar" version="1.1.0-SNAPSHOT" classifier="tests"></parent>
+                <source path="target/test-classes/META-INF/jqassistant-plugin.xml" fileName="/META-INF/jqassistant-plugin.xml">
+                  <parent path="target/test-classes" fileName="/target/test-classes" group="org.jqassistant.plugin" name="jqassistant-codeclimate-report-plugin" type="test-jar" version="1.1.0-SNAPSHOT" classifier="tests"></parent>
                 </source>
-                <value>/META-INF/jqassistant-plugin.xml</value>
+                <value>target/test-classes/META-INF/jqassistant-plugin.xml</value>
               </column>
+              <status level="2">success</status>
             </row>
           </rows>
         </result>
         <verificationResult>
           <success>true</success>
           <rowCount>2</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
         <duration>57</duration>
       </concept>
@@ -300,12 +331,13 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>false</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>179</duration>
+        <duration>166</duration>
         <required-concept id="jqassistant-plugin-plugin:PluginDescriptor">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </concept>
       <constraint id="jqassistant-plugin-plugin:Neo4jProceduresMustBeRegistered">
@@ -313,15 +345,16 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="2">major</severity>
-        <duration>49</duration>
+        <duration>45</duration>
         <required-concept id="neo4j:Procedure">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
         <required-concept id="jqassistant-plugin-plugin:PluginRegistersProcedure">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </constraint>
       <concept id="neo4j:UserFunction" abstract="false">
@@ -330,10 +363,11 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>false</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>54</duration>
+        <duration>48</duration>
       </concept>
       <concept id="jqassistant-plugin-plugin:PluginRegistersUserFunction" abstract="false">
         <description>Creates a `REGISTERS` relation between all function class elements of the jQAssistant plugin
@@ -341,12 +375,13 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>false</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="4">info</severity>
-        <duration>160</duration>
+        <duration>157</duration>
         <required-concept id="jqassistant-plugin-plugin:PluginDescriptor">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </concept>
       <constraint id="jqassistant-plugin-plugin:Neo4jUserFunctionsMustBeRegistered">
@@ -354,15 +389,16 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="2">major</severity>
-        <duration>54</duration>
+        <duration>46</duration>
         <required-concept id="neo4j:UserFunction">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
         <required-concept id="jqassistant-plugin-plugin:PluginRegistersUserFunction">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </constraint>
       <constraint id="jqassistant-plugin-plugin:PluginDescriptorShouldProvideVersion">
@@ -370,17 +406,18 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="3">minor</severity>
-        <duration>146</duration>
+        <duration>154</duration>
         <required-concept id="jqassistant-plugin-plugin:PluginDescriptor">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </constraint>
-      <duration>820</duration>
+      <duration>785</duration>
     </group>
-    <group id="jqassistant-plugin-package:Default" date="2026-04-24T10:33:07">
+    <group id="jqassistant-plugin-package:Default" date="2026-09-21T14:12:55">
       <concept id="java:GeneratedLombokType" abstract="false">
         <description>Labels types generated by Lombok as 'Generated' (requires 'lombok.addLombokGeneratedAnnotation=true' in 'lombok.config').</description>
         <result>
@@ -392,28 +429,31 @@ labels them with "Test", "Repeated", and "Junit5".</description>
               <column name="GeneratedTypes">
                 <value>3</value>
               </column>
+              <status level="2">success</status>
             </row>
           </rows>
         </result>
         <verificationResult>
           <success>true</success>
           <rowCount>3</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
-        <severity level="3">minor</severity>
-        <duration>60</duration>
+        <status level="2">success</status>
+        <severity level="4">info</severity>
+        <duration>59</duration>
       </concept>
       <concept id="java:GeneratedType" abstract="false">
         <description>Reports the count of types labeled with `Generated`, grouped by containing artifact.</description>
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
-        <severity level="3">minor</severity>
+        <status level="2">success</status>
+        <severity level="4">info</severity>
         <duration>1</duration>
         <providing-concept id="java:GeneratedLombokType">
-          <status>success</status>
+          <status level="2">success</status>
         </providing-concept>
       </concept>
       <constraint id="jqassistant-plugin-package:PackagesMustHaveGroupIdPrefix">
@@ -421,16 +461,17 @@ labels them with "Test", "Repeated", and "Junit5".</description>
         <verificationResult>
           <success>true</success>
           <rowCount>0</rowCount>
+          <hiddenRowCount>0</hiddenRowCount>
         </verificationResult>
-        <status>success</status>
+        <status level="2">success</status>
         <severity level="2">major</severity>
-        <duration>119</duration>
+        <duration>122</duration>
         <required-concept id="java:GeneratedType">
-          <status>success</status>
+          <status level="2">success</status>
         </required-concept>
       </constraint>
-      <duration>218</duration>
+      <duration>200</duration>
     </group>
-    <duration>220</duration>
+    <duration>202</duration>
   </group>
 </jqassistant-report>
