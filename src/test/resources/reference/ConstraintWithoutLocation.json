@@ -1,0 +1,14 @@
+[ {
+  "type" : "issue",
+  "description" : "A failing constraint without location. | Failure='This is a failure'",
+  "fingerprint" : "36263381476e18b08df9cf61e7483299c1f92c797643f7cc231bfcc39160a00a",
+  "severity" : "major",
+  "location" : {
+    "path" : ".jqassistant.yml",
+    "lines" : {
+      "begin" : 1,
+      "end" : 1
+    }
+  },
+  "check_name" : "[jQAssistant]codeclimate-report-it:ConstraintWithoutLocation"
+} ]

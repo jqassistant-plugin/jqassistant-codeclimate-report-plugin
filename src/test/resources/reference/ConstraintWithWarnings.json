@@ -4,7 +4,11 @@
   "fingerprint" : "579ab8e39eb1c746548560fa1c26442b57edae52ab4f6b4ef882d407460757ac",
   "severity" : "minor",
   "location" : {
-    "path" : "/org/jqassistant/plugin/codeclimate/report/it/TypeWithIssues.java"
+    "path" : "src/test/java/org/jqassistant/plugin/codeclimate/report/it/TypeWithIssues.java",
+    "lines" : {
+      "begin" : 1,
+      "end" : 1
+    }
   },
   "check_name" : "[jQAssistant]codeclimate-report-it:ConstraintWithWarnings"
 }, {
@@ -13,7 +17,7 @@
   "fingerprint" : "ef4037e5be07ba8714e4bdd45310daaa2e7414b6551be03b45b7e8df14001f0f",
   "severity" : "minor",
   "location" : {
-    "path" : "/org/jqassistant/plugin/codeclimate/report/it/TypeWithIssues.java",
+    "path" : "src/test/java/org/jqassistant/plugin/codeclimate/report/it/TypeWithIssues.java",
     "lines" : {
       "begin" : 10,
       "end" : 11

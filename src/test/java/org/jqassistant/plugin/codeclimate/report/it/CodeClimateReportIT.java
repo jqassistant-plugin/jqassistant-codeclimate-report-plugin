@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.buschmais.jqassistant.core.report.api.model.Result.Status.FAILURE;
 import static com.buschmais.jqassistant.core.report.api.model.Result.Status.WARNING;
+import static com.buschmais.jqassistant.core.scanner.api.DefaultScope.NONE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 import static uk.org.webcompere.modelassert.json.JsonAssertions.assertJson;
@@ -30,8 +31,16 @@ public class CodeClimateReportIT extends AbstractJavaPluginIT {
         verify("ConstraintWithWarnings", WARNING);
     }
 
+    @Test
+    void constraintWithotuLocation() throws RuleException, IOException {
+        verify("ConstraintWithoutLocation", FAILURE);
+    }
+
     private void verify(String constraintId, Result.Status expectedStatus) throws RuleException, IOException {
-        scanClassPathDirectory(getClassesDirectory(TypeWithIssues.class));
+        File classesDirectory = getClassesDirectory(TypeWithIssues.class);
+        File sourceDirectory = new File(classesDirectory, "../../src/test/java");
+        getScanner().scan(sourceDirectory, null, NONE);
+        scanClassPathDirectory(classesDirectory);
         Result<Constraint> result = validateConstraint("codeclimate-report-it:" + constraintId, Map.of("fqn", TypeWithIssues.class.getName()));
 
         assertThat(result.getStatus()).isEqualTo(expectedStatus);

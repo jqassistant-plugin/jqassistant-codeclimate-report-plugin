@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import com.buschmais.jqassistant.core.report.api.ReportContext;
 import com.buschmais.jqassistant.core.report.api.ReportException;
@@ -15,11 +14,9 @@ import com.buschmais.jqassistant.core.report.api.model.Column;
 import com.buschmais.jqassistant.core.report.api.model.Result;
 import com.buschmais.jqassistant.core.report.api.model.Row;
 import com.buschmais.jqassistant.core.report.api.model.source.FileLocation;
-import com.buschmais.jqassistant.core.report.api.model.source.SourceLocation;
 import com.buschmais.jqassistant.core.rule.api.model.Constraint;
 import com.buschmais.jqassistant.core.rule.api.model.ExecutableRule;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.jqassistant.plugin.codeclimate.report.api.impl.model.Issue;
@@ -29,7 +26,6 @@ import org.mapstruct.factory.Mappers;
 import static com.buschmais.jqassistant.core.report.api.model.Result.Status.FAILURE;
 import static com.buschmais.jqassistant.core.report.api.model.Result.Status.WARNING;
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
-import static java.util.Optional.empty;
 import static java.util.stream.Collectors.joining;
 
 @Default
@@ -39,6 +35,14 @@ public class CodeClimateReportPlugin implements ReportPlugin {
     public static final String REPORT_DIRECTORY = "codeclimate";
 
     public static final String REPORT_FILE = "jqassistant-codeclimate-report.json";
+
+    private static final Location DEFAULT_LOCATION = Location.builder()
+        .path(".jqassistant.yml")
+        .lines(Location.Lines.builder()
+            .begin(1)
+            .end(1)
+            .build())
+        .build();
 
     private static final SeverityMapper SEVERITY_MAPPER = Mappers.getMapper(SeverityMapper.class);
 
@@ -78,7 +82,8 @@ public class CodeClimateReportPlugin implements ReportPlugin {
         try {
             File file = new File(reportDirectory, REPORT_FILE).getCanonicalFile();
             log.info("Writing CodeClimate report to {}.", file);
-            OBJECT_MAPPER.writerWithDefaultPrettyPrinter().writeValue(file, issues);
+            OBJECT_MAPPER.writerWithDefaultPrettyPrinter()
+                .writeValue(file, issues);
         } catch (IOException e) {
             throw new ReportException("Failed to write CodeClimate report file.", e);
         }
@@ -86,47 +91,46 @@ public class CodeClimateReportPlugin implements ReportPlugin {
 
     private Issue getIssue(Result<? extends ExecutableRule> result, Constraint constraint, Row row) {
         Issue.IssueBuilder issueBuilder = Issue.builder()
-                .checkName("[jQAssistant]" + constraint.getId())
-                .severity(SEVERITY_MAPPER.toReport(constraint.getSeverity()))
-                .fingerprint(row.getKey());
+            .checkName("[jQAssistant]" + constraint.getId())
+            .severity(SEVERITY_MAPPER.toReport(constraint.getSeverity()))
+            .fingerprint(row.getKey());
         StringBuilder description = new StringBuilder(constraint.getDescription());
         String columnsValues = row.getColumns()
-                .entrySet()
-                .stream()
-                .map(entry -> entry.getKey() + "='" + entry.getValue()
-                        .getLabel() + "'")
-                .collect(joining(", "));
+            .entrySet()
+            .stream()
+            .map(entry -> entry.getKey() + "='" + entry.getValue()
+                .getLabel() + "'")
+            .collect(joining(", "));
         if (!columnsValues.isEmpty()) {
             description.append(" | ")
-                    .append(columnsValues);
+                .append(columnsValues);
         }
         issueBuilder.description(description.toString());
-        getLocation(result, row).ifPresent(issueBuilder::location);
+        issueBuilder.location(getLocation(result, row));
         return issueBuilder.build();
     }
-//Despite linking of source locations is implemented by this plugin the generated links are not valid yet. This requires a https://github.com/jQAssistant/jqassistant/issues/1077[change in jQAssistant] which is scheduled for one of the next releases.
-    private Optional<Location> getLocation(Result<? extends ExecutableRule> result, Row row) {
-        Optional<String> primaryColumnName = result.getPrimaryColumn();
-        if (primaryColumnName.isPresent()) {
-            Column<?> column = row.getColumns()
-                    .get(primaryColumnName.get());
-            Optional<SourceLocation<?>> optionalSourceLocation = column.getSourceLocation();
-            if (optionalSourceLocation.isPresent() && optionalSourceLocation.get() instanceof FileLocation) {
-                SourceLocation<?> sourceLocation = optionalSourceLocation.get();
-                Location.LocationBuilder locationBuilder = Location.builder()
-                        .path(sourceLocation.getFileName());
-                    FileLocation fileLocation = (FileLocation) sourceLocation;
-                    fileLocation.getStartLine()
-                            .ifPresent(startLine -> {
-                                Location.Lines.LinesBuilder linesBuilder = Location.Lines.builder()
-                                        .begin(startLine);
-                                fileLocation.getEndLine()
-                                        .ifPresent(linesBuilder::end);
-                                locationBuilder.lines(linesBuilder.build());
-                            });
-                return Optional.of(locationBuilder.build());
-            }
-        }
-        return empty();
+
+    private Location getLocation(Result<? extends ExecutableRule> result, Row row) {
+        return result.getPrimaryColumn()
+            .map(primaryColumnName -> row.getColumns()
+                .get(primaryColumnName))
+            .flatMap(Column::getSourceLocation)
+            .filter(location -> location instanceof FileLocation)
+            .map(location -> (FileLocation) location)
+            .filter(location -> location.getPath() != null)
+            .map(this::getLocation)
+            .orElse(DEFAULT_LOCATION);
+    }
+
+    private Location getLocation(FileLocation fileLocation) {
+        return Location.builder()
+            .path(fileLocation.getPath())
+            .lines(Location.Lines.builder()
+                .begin(fileLocation.getStartLine()
+                    .orElse(1))
+                .end(fileLocation.getEndLine()
+                    .orElse(1))
+                .build())
+            .build();
     }
 }
